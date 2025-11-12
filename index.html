@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cine - Selección de Asientos</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #FFF8F0;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    /* Películas */
+    .peliculas {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .pelicula {
+      width: 120px;
+      height: 170px;
+      background: #ddd;
+      border: 2px solid #aaa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .pelicula:hover {
+      border-color: #333;
+      transform: scale(1.05);
+    }
+
+    /* Sala y asientos */
+    .sala {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .pantalla {
+      background: #999;
+      color: white;
+      width: 70%;
+      padding: 8px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+    }
+    .fila {
+      display: flex;
+      justify-content: center;
+      margin: 5px 0;
+    }
+    .asiento {
+      width: 30px;
+      height: 30px;
+      margin: 4px;
+      border-radius: 5px;
+      background: #4CAF50;
+      cursor: pointer;
+      transition: 0.3s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: white;
+      font-weight: bold;
+    }
+    .asiento:hover {
+      transform: scale(1.1);
+    }
+    .asiento.seleccionado {
+      background: #2196F3;
+    }
+
+    /* Información */
+    .info {
+      margin-top: 20px;
+      font-size: 16px;
+    }
+
+    /* Formulario */
+    .formulario {
+      margin-top: 20px;
+    }
+    input {
+      padding: 5px;
+      margin: 5px;
+    }
+    button {
+      padding: 6px 12px;
+      margin-top: 10px;
+      cursor: pointer;
+    }
+
+    /* Boleto */
+    .boleto {
+      margin-top: 30px;
+      background: white;
+      padding: 20px;
+      border: 2px dashed #333;
+      display: none;
+      width: 320px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Reserva tu asiento</h1>
+
+  <!-- Películas -->
+  <div class="peliculas">
+    <div class="pelicula"> <img src="marcianos_vs_mexicanos.jpg" alt="" height="160px" width="110px"></div>
+    <div class="pelicula"> <img src="peli50sombrasgrey.jpg" alt="" height="160px" width="110px"></div>
+    <div class="pelicula"> <img src="pelielconjuro.jpg" alt="" height="160px" width="110px"></div>
+  </div>
+
+  <!-- Sala -->
+  <div class="sala">
+    <div class="pantalla">Pantalla</div>
+
+    <!-- Filas de asientos -->
+    <div class="fila" data-fila="A">
+      <div class="asiento" id="A1">A1</div>
+      <div class="asiento" id="A2">A2</div>
+      <div class="asiento" id="A3">A3</div>
+      <div class="asiento" id="A4">A4</div>
+      <div class="asiento" id="A5">A5</div>
+      <div class="asiento" id="A6">A6</div>
+    </div>
+    <div class="fila" data-fila="B">
+      <div class="asiento" id="B1">B1</div>
+      <div class="asiento" id="B2">B2</div>
+      <div class="asiento" id="B3">B3</div>
+      <div class="asiento" id="B4">B4</div>
+      <div class="asiento" id="B5">B5</div>
+      <div class="asiento" id="B6">B6</div>
+    </div>
+    <div class="fila" data-fila="C">
+      <div class="asiento" id="C1">C1</div>
+      <div class="asiento" id="C2">C2</div>
+      <div class="asiento" id="C3">C3</div>
+      <div class="asiento" id="C4">C4</div>
+      <div class="asiento" id="C5">C5</div>
+      <div class="asiento" id="C6">C6</div>
+    </div>
+    <div class="fila" data-fila="D">
+      <div class="asiento" id="D1">D1</div>
+      <div class="asiento" id="D2">D2</div>
+      <div class="asiento" id="D3">D3</div>
+      <div class="asiento" id="D4">D4</div>
+      <div class="asiento" id="D5">D5</div>
+      <div class="asiento" id="D6">D6</div>
+    </div>
+  </div>
+
+  <!-- Formulario cliente -->
+  <div class="formulario">
+    <p>Costo boleto: <strong>$80</strong></p>
+    <input type="text" id="cliente" placeholder="Nombre del cliente">
+    <input type="text" id="peliculaNombre" placeholder="Nombre de la película">
+    <br>
+    <button onclick="generarBoleto()">Generar Boleto</button>
+  </div>
+
+  <!-- Info -->
+  <div class="info">
+    <p>Asientos seleccionados: <span id="contador">0</span></p>
+    <p>Total a pagar: $<span id="total">0</span></p>
+  </div>
+
+  <!-- Boleto generado -->
+  <div class="boleto" id="boleto">
+    <h2>🎟️ Boleto de Cine 🎟️</h2>
+    <p><strong>Nombre:</strong> <span id="boletoNombre"></span></p>
+    <p><strong>Película:</strong> <span id="boletoPelicula"></span></p>
+    <p><strong>Asientos:</strong> <span id="boletoAsientos"></span></p>
+    <p><strong>Total:</strong> $<span id="boletoTotal"></span></p>
+  </div>
+
+  <script>
+    const asientos = document.querySelectorAll('.asiento');
+    const contador = document.getElementById('contador');
+    const total = document.getElementById('total');
+    const precio = 80;
+
+    // Selección con clic
+    asientos.forEach(asiento => {
+      asiento.addEventListener('click', () => {
+        asiento.classList.toggle('seleccionado');
+        actualizar();
+      });
+    });
+
+    // Actualizar totales
+    function actualizar() {
+      const seleccionados = document.querySelectorAll('.asiento.seleccionado');
+      contador.textContent = seleccionados.length;
+      total.textContent = seleccionados.length * precio;
+    }
+
+    // Generar boleto
+    function generarBoleto() {
+      const nombre = document.getElementById('cliente').value.trim();
+      const pelicula = document.getElementById('peliculaNombre').value.trim();
+      const seleccionados = document.querySelectorAll('.asiento.seleccionado');
+      const boleto = document.getElementById('boleto');
+
+      if (!nombre) {
+        alert("Por favor escribe el nombre del cliente.");
+        return;
+      }
+      if (!pelicula) {
+        alert("Por favor escribe el nombre de la película.");
+        return;
+      }
+      if (seleccionados.length === 0) {
+        alert("Por favor selecciona al menos un asiento.");
+        return;
+      }
+
+      const asientosSeleccionados = Array.from(seleccionados).map(a => a.id).join(", ");
+
+      document.getElementById('boletoNombre').textContent = nombre;
+      document.getElementById('boletoPelicula').textContent = pelicula;
+      document.getElementById('boletoAsientos').textContent = asientosSeleccionados;
+      document.getElementById('boletoTotal').textContent = seleccionados.length * precio;
+
+      boleto.style.display = "block";
+    }
+  </script>
+</body>
+</html>
